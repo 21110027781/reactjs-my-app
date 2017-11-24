@@ -10,6 +10,7 @@
 .PokeCard .box-poke{
 	margin: 15px;
 	background-color: #fff;
+    padding: 10px;
 }
 .PokeCard img{
     width: 120px;

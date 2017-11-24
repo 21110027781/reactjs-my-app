@@ -23,3 +23,13 @@ h1,h2,h3,h4,h5,h6{
 	justify-content: space-around;
 	align-content: space-around;
 }
+
+.navbar-default .navbar-nav>li>a.active{
+	background-color: #ddd;
+}
+.br-white{
+	background-color: #fff;
+}
+.c-pointer{
+	cursor: pointer;
+}

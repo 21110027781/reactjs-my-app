@@ -1,17 +1,3 @@
-.PokeCard{
-	text-align: center;
-	width: 25%;
-}
-
-.PokeCard h3{
-	font-size: 16px;
-	margin-bottom: 15px;
-}
-.PokeCard .box-poke{
-	margin: 15px;
-	background-color: #fff;
-}
-.PokeCard img{
-    width: 120px;
-    height: 120px;
+.pointer{
+	cursor: pointer;
 }

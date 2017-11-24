@@ -4,32 +4,38 @@ import Search from './Search';
 import PokeCard from './PokeCard';
 
 const title = 'Pokemon';
-
+const pokedex = [
+    'pichu', 'decidueye', 'horsea', 'kingdra', 'ivysaur', 'pikachu', 'aggron', 'florges'
+]
 
 class Pokemon extends Component {
 	constructor(props){
 		super(props);
 		this.onUpdate = this.onUpdate.bind(this);
 		this.state = {
-			pokedex : this.props.pokedex
+			pokedex : pokedex
 		}
 	}
 
 	onUpdate(word){
-		let newPokedex = this.props.pokedex.filter(p => p.indexOf(word) > -1 )
+		let newPokedex = pokedex.filter(p => p.indexOf(word) > -1 )
 		this.setState({
 			pokedex: newPokedex
 		})
 	}
 
     render() {
-        return (<div>
-        	<Title text1={title} />
-        	<Search filter={this.onUpdate} />
-        	<section className="grid-content">
-        		{ this.state.pokedex.map((p,k) => <PokeCard key={k} name={p} />)}
-        	</section>
-        </div>);
+        return (
+        	<div className="row">
+        		<div className="col-md-12">
+		        	<Title text1={title} />
+		        	<Search filter={this.onUpdate} />
+		        	<section className="grid-content">
+		        		{ this.state.pokedex.map((p,k) => <PokeCard key={k} name={p} />)}
+		        	</section>
+	        	</div>
+        	</div>
+        );
     }
 }
 

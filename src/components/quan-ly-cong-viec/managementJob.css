@@ -1,0 +1,16 @@
+.dropdown-sort li{
+	position: relative;
+}
+.dropdown-sort li.sort_selected:after{
+    content: "\f00c";
+	position: absolute;
+    top: 50%;
+    margin-top: -7px;
+    right: 5px;
+    display: inline-block;
+    font: normal normal normal 14px/1 FontAwesome;
+    font-size: inherit;
+    text-rendering: auto;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+}
