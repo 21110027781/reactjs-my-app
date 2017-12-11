@@ -2,14 +2,30 @@ import React from 'react';
 import ReactDOM from 'react-dom';
 import './index.css';
 import App from './App';
+import registerServiceWorker from './registerServiceWorker';
 
-import Router from './zzz_Router';
+
+import {createStore} from 'redux'
+
+import myReducer from './reducers/index';
+import { Provider } from 'react-redux';
+
+const store = createStore(
+	myReducer,
+	window.__REDUX_DEVTOOLS_EXTENSION__ && window.__REDUX_DEVTOOLS_EXTENSION__()
+);
+
+// import Router from './zzz_Router';
 // import Load from './zzz_Load';
 
-// import registerServiceWorker from './registerServiceWorker';
 
-ReactDOM.render(<App />, document.getElementById('root'));
-// registerServiceWorker();
+ReactDOM.render(
+	<Provider store={store}>
+		<App />
+	</Provider>, 
+	document.getElementById('root')
+);
+registerServiceWorker();
 
 
 
