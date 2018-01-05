@@ -14,7 +14,7 @@ class ManagementJob extends Component {
 	constructor(props){
 		super(props);
 		this.state = {
-			taskEditing: null,
+			// taskEditing: null,
 			filter: {
 				name: '',
 				status: -1
@@ -28,18 +28,17 @@ class ManagementJob extends Component {
 	
 
 	onToggleForm = () => {
-		// if(this.state.isDisplayForm && this.state.taskEditing !== null){
-		// 	this.setState({
-		// 		isDisplayForm : true,
-		// 		taskEditing: null
-		// 	})
-		// }else{
-		// 	this.setState({
-		// 		isDisplayForm : !this.state.isDisplayForm,
-		// 		taskEditing: null
-		// 	})
-		// }
-		this.props.onToggleForm();
+		let { itemEditing } = this.props;
+		if(itemEditing && itemEditing.id !== ''){
+			this.props.onOpenForm();
+		}else{
+			this.props.onToggleForm();
+		}
+		this.props.onClearTask({
+			id: '',
+			name: '',
+			status: false
+		});
 	}
 
 	onShowForm = () => {
@@ -48,18 +47,18 @@ class ManagementJob extends Component {
 		})
 	}
 
-	onDelete = (id) => {
-		let { tasks } = this.state;
-		let index = this.findIndex(id);
-		console.log(index)
-		if(index !== -1){
-			tasks.splice(index, 1);
-			this.setState({
-				tasks: tasks
-			})
-			localStorage.setItem('tasks', JSON.stringify(tasks));
-		}
-	}
+	// onDelete = (id) => {
+	// 	let { tasks } = this.state;
+	// 	let index = this.findIndex(id);
+	// 	console.log(index)
+	// 	if(index !== -1){
+	// 		tasks.splice(index, 1);
+	// 		this.setState({
+	// 			tasks: tasks
+	// 		})
+	// 		localStorage.setItem('tasks', JSON.stringify(tasks));
+	// 	}
+	// }
 
 	// onUpdateStatus = (id) => {
 	// 	let { tasks } = this.state;
@@ -76,17 +75,17 @@ class ManagementJob extends Component {
 	// 	}
 	// }
 
-	onUpdate = (id) => {
-		let { tasks } = this.state;
-		let index = this.findIndex(id);
-		let taskEditing = tasks[index];
+	// onUpdate = (id) => {
+	// 	let { tasks } = this.state;
+	// 	let index = this.findIndex(id);
+	// 	let taskEditing = tasks[index];
 
-		this.setState({
-			taskEditing: taskEditing
-		});
+	// 	this.setState({
+	// 		taskEditing: taskEditing
+	// 	});
 
-		this.onShowForm();
-	}
+	// 	this.onShowForm();
+	// }
 
 
 	findIndex = (id) => {
@@ -125,7 +124,7 @@ class ManagementJob extends Component {
 
     render() {
     	let { 
-	    		taskEditing, 
+	    		// taskEditing, 
 	    		// filter, 
 	    		// keyword,
 	    		sortBy,
@@ -170,7 +169,7 @@ class ManagementJob extends Component {
 		// 		else return 0;
 		// 	})
 		// }
-    	let elmTaskform = isDisplayForm ? <TaskForm task={taskEditing} /> : '';
+    	// let elmTaskform = isDisplayForm ? <TaskForm task={taskEditing} /> : '';
 
 
         return (
@@ -180,7 +179,7 @@ class ManagementJob extends Component {
 				<div className="row">
 					<div className="col-md-4">
 					{/* Form */}
-					{elmTaskform}
+					<TaskForm />
 					</div>
 					<div className={isDisplayForm ? 'col-md-8' : 'col-md-12'}>
 						<div>
@@ -193,7 +192,7 @@ class ManagementJob extends Component {
 							<div className="col-xs-12 col-sm-12 col-md-12 col-lg-12">
 								<TaskList
 									onUpdateStatus={this.onUpdateStatus} 
-									onDelete={this.onDelete}
+									// onDelete={this.onDelete}
 									onUpdate={this.onUpdate}
 									onFilter={this.onFilter}
 								/>
@@ -208,7 +207,8 @@ class ManagementJob extends Component {
 
 const mapStateToProps = state => {
 	return {
-		isDisplayForm: state.isDisplayForm
+		isDisplayForm: state.isDisplayForm,
+		itemEditing: state.itemEditing
 	};
 }
 
@@ -216,7 +216,13 @@ const mapDispatchProps = (dispatch, props) => {
 	return {
 		onToggleForm: () => {
 			dispatch(actions.toggleForm())
-		}
+		},
+		onClearTask: (task) => {
+			dispatch(actions.editTask(task));
+		},
+		onOpenForm: () => {
+			dispatch(actions.openForm())
+		},
 	};
 }
 

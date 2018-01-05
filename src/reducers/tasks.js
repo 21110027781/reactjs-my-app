@@ -23,22 +23,36 @@ let findIndex = (tasks, id) => {
 }
 
 let myReducer = (state = initialState, action) => {
+	let id = '';
+	let index = -1;
 	switch(action.type){
 		case types.LIST_ALL:
 			return state;
-		case types.ADD_TASK:
-			console.log(action);
-			var newTask = {
-				id : generateID(),
+
+
+		case types.SAVE_TASK:
+			console.log(action.task);
+			let task = {
+				id: action.task.id,
 				name: action.task.name,
-				status: action.task.status === 'true' ? true : false
+				status: action.task.status === true ? true : false
+			};
+			if(!task.id){
+				task.id = generateID();
+				state.push(task);
+			}else{
+				index = findIndex(state, task.id);
+				// console.log(task)
+				state[index] = task;
 			}
-			state.push(newTask);
+			// console.log(task)
 			localStorage.setItem('tasks', JSON.stringify(state));
 			return [...state]; //chặn tham thiếu vùng nhớ
+
+
 		case types.UPDATE_STATUS_TASK:
-			let id = action.id;
-			let index = findIndex(state, id);
+			id = action.id;
+			index = findIndex(state, id);
 
 
 			// let cloneTask = {...state[index]};
@@ -53,6 +67,13 @@ let myReducer = (state = initialState, action) => {
 			
 			localStorage.setItem('tasks', JSON.stringify(state));
 			return [...state]; //chặn tham thiếu vùng nhớ
+		case types.DELETE_TASK:
+			id = action.id;
+			index = findIndex(state, id);
+
+			state.splice(index, 1);
+			localStorage.setItem('tasks', JSON.stringify(state));
+			return [...state];
 		default:
 			return state;
 	}
