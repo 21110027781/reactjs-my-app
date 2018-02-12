@@ -16,32 +16,62 @@ class TaskList extends Component {
 		let target = event.target;
 		let name = target.name;
 		let value = target.value === 'checkbox' ? target.checked : target.value;
-		// this.props.onFilter(
-		// 	name === 'filterName' ? value : this.state.filterName,
-		// 	name === 'filterStatus' ? value : this.state.filterStatus
-		// );
-		
-		this.props.onFilterTable(
-			name === 'filterName' ? value : this.state.filterName,
-			name === 'filterStatus' ? value : this.state.filterStatus
-			)
+		let filter = {
+			name: name === 'filterName' ? value : this.state.filterName,
+			status: name === 'filterStatus' ? value : this.state.filterStatus 
+		};
+		this.props.onFilterTable(filter);
 		this.setState({
 			[name]: value
 		});
-		console.log(this.state)
 	}
 
     render() {
-    	// console.log(this.props.tasks)
-    	let { tasks } = this.props;
+    	let { tasks, filterTable, keyword, sort } = this.props;
+
+		/* filter by search input */
+		if(filterTable.name){
+			tasks = tasks.filter((task) => {
+				return task.name.toLowerCase().indexOf(filterTable.name) !== -1;
+			})
+		}
+
+		/* filter by Trạng thái */
+		tasks = tasks.filter((task) => {
+			if(filterTable.status === -1){
+				return task;
+			}else{
+				return task.status === (filterTable.status === 1 ? true : false);
+			}
+		})
+
+		if(keyword){
+			tasks = tasks.filter((task) => {
+				return task.name.toLowerCase().indexOf(keyword) !== -1;
+			})
+		}
+
+		if(sort.by === 'name'){
+			tasks.sort((a,b) => {
+				if(a.name > b.name) return sort.value;
+				else if (a.name < b.name) return -sort.value;
+				else return 0;
+			})
+		}else{
+			tasks.sort((a,b) => {
+				if(a.status > b.status) return -sort.value;
+				else if (a.status < b.status) return sort.value;
+				else return 0;
+			})
+		}
+		
+		
     	let { filterName, filterStatus } = this.state;
     	let elmTasks = tasks.map((task, index) => {
 			return <TaskItem
 						key={task.id}
 						index={index} 
 						task={task} 
-						// onDelete={this.props.onDelete}
-						// onUpdate={this.props.onUpdate}
 					/>;
     	});
     	
@@ -79,11 +109,19 @@ class TaskList extends Component {
     }
 }
 
+// biến {state} ở dưới là từ trên store (reducers/index.js)
 const mapStateToProps = (state) => {
 	return {
-		tasks: state.tasks
+		tasks: state.tasks,
+		filterTable: state.filterTable,
+		keyword: state.search,
+		sort: state.sort,
 	}
 }
+// sau khi chay xong thi đã có props rồi
+
+
+
 
 const mapDispatchProps = (dispatch, props) => {
 	return {
@@ -93,4 +131,4 @@ const mapDispatchProps = (dispatch, props) => {
 	}
 }
 
-export default connect(mapStateToProps, null)(TaskList);
+export default connect(mapStateToProps, mapDispatchProps)(TaskList);

@@ -1,5 +1,10 @@
 import React, { Component } from 'react';
 
+import {connect} from 'react-redux';
+
+import * as actions from './../../actions/index';
+
+
 class Control extends Component {
 	constructor(props){
 		super(props);
@@ -18,7 +23,7 @@ class Control extends Component {
 	}
 	
 	onSearch = () => {
-		this.props.onSearch(this.state.keyword);
+		this.props.onSearch(this.state.keyword);   //dispath searchTask
 	}
 
     render() {
@@ -37,4 +42,21 @@ class Control extends Component {
     }
 }
 
-export default Control;
+
+//ko can gia tri tu props
+// const mapStateToProps = state => {
+// 	return {
+// 		isDisplayForm: state.isDisplayForm,
+// 		itemEditing: state.itemEditing
+// 	};
+// }
+
+const mapDispatchProps = (dispatch, props) => {
+	return {
+		onSearch: (keyword) => {
+			dispatch(actions.searchTask(keyword));
+		}
+	};
+}
+
+export default connect(null, mapDispatchProps)(Control);

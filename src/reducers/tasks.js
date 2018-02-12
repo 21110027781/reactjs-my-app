@@ -28,10 +28,7 @@ let myReducer = (state = initialState, action) => {
 	switch(action.type){
 		case types.LIST_ALL:
 			return state;
-
-
 		case types.SAVE_TASK:
-			console.log(action.task);
 			let task = {
 				id: action.task.id,
 				name: action.task.name,

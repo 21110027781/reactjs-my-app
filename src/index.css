@@ -29,6 +29,7 @@ h1,h2,h3,h4,h5,h6{
 }
 .br-white{
 	background-color: #fff;
+	padding: 0px 15px;
 }
 .c-pointer{
 	cursor: pointer;

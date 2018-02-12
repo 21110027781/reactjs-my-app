@@ -58,3 +58,17 @@ export const filterTask = (filter) => {
 		filter
 	}
 }
+
+export const searchTask = (keyword) => {
+	return {
+		type: types.SEARCH, // giá trị bên file constants
+		keyword
+	}
+}
+
+export const sortTask = (sort) => {
+	return {
+		type: types.SORT, // giá trị bên file constants
+		sort
+	}
+}
